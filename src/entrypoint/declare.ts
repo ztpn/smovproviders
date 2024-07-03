@@ -27,7 +27,7 @@ export function makeProviders(ops: ProviderMakerOptions) {
   const features = getTargetFeatures(
     ops.proxyStreams ? 'any' : ops.target,
     ops.consistentIpForRequests ?? false,
-    ops.proxyStreams ?? false,
+    ops.proxyStreams,
   );
   const list = getProviders(features, {
     embeds: getBuiltinEmbeds(),

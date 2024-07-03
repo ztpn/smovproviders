@@ -60,7 +60,7 @@ export const targetToFeatures: Record<Targets, FeatureMap> = {
 export function getTargetFeatures(
   target: Targets,
   consistentIpForRequests: boolean,
-  proxyStreams: boolean,
+  proxyStreams?: boolean,
 ): FeatureMap {
   const features = targetToFeatures[target];
   if (!consistentIpForRequests) features.disallowed.push(flags.IP_LOCKED);
