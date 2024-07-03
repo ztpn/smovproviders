@@ -1,3 +1,4 @@
+import { flags } from '@/entrypoint/utils/targets';
 import { NotFoundError } from '@/utils/errors';
 
 import { makeEmbed } from '../../base';
@@ -28,7 +29,7 @@ export const fileMoonMp4Scraper = makeEmbed({
               url,
             },
           },
-          flags: [],
+          flags: [flags.IP_LOCKED],
           captions: result.stream[0].captions,
         },
       ],
