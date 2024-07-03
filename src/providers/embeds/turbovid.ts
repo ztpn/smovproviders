@@ -1,4 +1,3 @@
-import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
 
 // Thanks to Paradox_77 for helping with the decryption
@@ -71,7 +70,7 @@ export const turbovidScraper = makeEmbed({
           headers: {
             referer: baseUrl,
           },
-          flags: [flags.CORS_ALLOWED],
+          flags: [],
           captions: [],
         },
       ],
