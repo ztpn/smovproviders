@@ -2,7 +2,6 @@
 // thanks Paradox_77
 import { load } from 'cheerio';
 
-import { flags } from '@/entrypoint/utils/targets';
 import { SourcererEmbed, makeSourcerer } from '@/providers/base';
 import { compareMedia } from '@/utils/compare';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
@@ -151,7 +150,7 @@ export const m4uScraper = makeSourcerer({
   id: 'm4ufree',
   name: 'M4UFree',
   rank: 125,
-  flags: [flags.CORS_ALLOWED],
+  flags: [],
   scrapeMovie: universalScraper,
   scrapeShow: universalScraper,
 });
