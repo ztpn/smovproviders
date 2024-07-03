@@ -14,11 +14,11 @@ export function setupProxy(stream: Stream): Stream {
       : null;
 
   if (stream.type === 'hls')
-    stream.playlist = `https://swallow.prawnhub.ru/${encodeURIComponent(stream.playlist)}/${headers}`;
+    stream.playlist = `https://proxy.nsbx.ru/hls/${encodeURIComponent(stream.playlist)}/${headers}`;
 
   if (stream.type === 'file')
     Object.entries(stream.qualities).forEach((entry) => {
-      entry[1].url = `https://mp4proxy.nsbxru.workers.dev/proxy/${encodeURIComponent(entry[1].url)}/${headers}`;
+      entry[1].url = `https://proxy.nsbx.ru/mp4/${encodeURIComponent(entry[1].url)}/${headers}`;
     });
 
   stream.headers = {};
