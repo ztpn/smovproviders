@@ -7,12 +7,12 @@ const providers = [
   {
     id: 'nova',
     name: 'VidBinge Nova',
-    rank: 701,
+    rank: 700,
   },
   {
     id: 'astra',
     name: 'VidBinge Astra',
-    rank: 700,
+    rank: 701,
   },
 ];
 
