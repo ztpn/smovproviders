@@ -3,8 +3,6 @@ import { SourcererOutput, makeSourcerer } from '@/providers/base';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
-import { whvxScraper } from './whvx';
-
 async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> {
   const query = {
     title: ctx.media.title,
@@ -23,7 +21,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   if (res.providers?.length === 0) throw new NotFoundError('No providers available');
   if (!res.endpoint) throw new Error('No endpoint returned');
 
-  let embeds = res.providers.map((provider: string) => {
+  const embeds = res.providers.map((provider: string) => {
     return {
       embedId: provider,
       url: `${JSON.stringify(query)}|${res.endpoint}`,
