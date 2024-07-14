@@ -36,10 +36,9 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
 
 export const whvxScraper = makeSourcerer({
   id: 'whvx',
-  name: 'WHVX',
-  rank: 149,
+  name: 'VidBinge',
+  rank: 128,
   flags: [flags.CORS_ALLOWED],
-  disabled: true,
   scrapeMovie: comboScraper,
   scrapeShow: comboScraper,
 });

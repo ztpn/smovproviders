@@ -30,18 +30,6 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
     };
   });
 
-  try {
-    const whvx =
-      ctx.media.type === 'movie' && whvxScraper.scrapeMovie
-        ? await whvxScraper.scrapeMovie(ctx as MovieScrapeContext)
-        : whvxScraper.scrapeShow
-          ? await whvxScraper.scrapeShow(ctx as ShowScrapeContext)
-          : null;
-    if (whvx && whvx.embeds.length) embeds = [...embeds, ...whvx.embeds];
-  } catch {
-    //
-  }
-
   return {
     embeds,
   };

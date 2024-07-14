@@ -6,12 +6,12 @@ import { baseUrl } from '../sources/whvx';
 const providers = [
   {
     id: 'nova',
-    name: 'VidBinge Nova',
+    name: 'Nova',
     rank: 701,
   },
   {
     id: 'astra',
-    name: 'VidBinge Astra',
+    name: 'Astra',
     rank: 700,
   },
 ];
