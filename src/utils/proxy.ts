@@ -8,22 +8,35 @@ export function requiresProxy(stream: Stream): boolean {
 }
 
 export function setupProxy(stream: Stream): Stream {
-  const headers =
-    stream.headers && Object.keys(stream.headers).length > 0 ? btoa(JSON.stringify(stream.headers)) : null;
+  const headers = stream.headers && Object.keys(stream.headers).length > 0 ? stream.headers : undefined;
 
-  const options = btoa(
-    JSON.stringify({
-      ...(stream.type === 'hls' && { depth: stream.proxyDepth ?? 0 }),
-    }),
-  );
+  const options = {
+    ...(stream.type === 'hls' && { depth: stream.proxyDepth ?? 0 }),
+  };
 
-  if (stream.type === 'hls')
-    stream.playlist = `https://proxy.nsbx.ru/hls/${btoa(stream.playlist)}/${headers}/${options}`;
+  const payload: {
+    type?: 'hls' | 'mp4';
+    url?: string;
+    headers?: Record<string, string>;
+    options?: { depth?: 0 | 1 | 2 };
+  } = {
+    headers,
+    options,
+  };
 
-  if (stream.type === 'file')
+  if (stream.type === 'hls') {
+    payload.type = 'hls';
+    payload.url = stream.playlist;
+    stream.playlist = `https://proxy.nsbx.ru/proxy?${new URLSearchParams({ payload: Buffer.from(JSON.stringify(payload)).toString('base64url') })}`;
+  }
+
+  if (stream.type === 'file') {
+    payload.type = 'mp4';
     Object.entries(stream.qualities).forEach((entry) => {
-      entry[1].url = `https://proxy.nsbx.ru/mp4/${btoa(entry[1].url)}/${headers}/${options}`;
+      payload.url = entry[1].url;
+      entry[1].url = `https://proxy.nsbx.ru/proxy?${new URLSearchParams({ payload: Buffer.from(JSON.stringify(payload)).toString('base64url') })}`;
     });
+  }
 
   stream.headers = {};
   stream.flags = [flags.CORS_ALLOWED];
