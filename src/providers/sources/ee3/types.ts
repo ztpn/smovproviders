@@ -24,3 +24,8 @@ export interface renewResponse {
   msg?: string | null;
   status: number | string | null;
 }
+
+export interface loginResponse {
+  status: number;
+  message: string;
+}
