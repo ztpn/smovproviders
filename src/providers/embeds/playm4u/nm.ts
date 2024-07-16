@@ -1,9 +1,7 @@
 import { load } from 'cheerio';
 import crypto from 'crypto-js';
 
-import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
-import { convertPlaylistsToDataUrls } from '@/utils/playlist';
 
 const { AES, MD5 } = crypto;
 
@@ -115,9 +113,9 @@ export const playm4uNMScraper = makeEmbed({
         {
           id: 'primary',
           type: 'hls',
-          playlist: await convertPlaylistsToDataUrls(ctx.proxiedFetcher, apiRes.data),
+          playlist: apiRes.data,
           captions: [],
-          flags: [flags.CORS_ALLOWED],
+          flags: [],
         },
       ],
     };
