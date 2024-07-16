@@ -1,32 +1,35 @@
 import { EmbedOutput, makeEmbed } from '@/providers/base';
 import { NotFoundError } from '@/utils/errors';
 
+import { baseUrl } from '../sources/whvx';
+
 const providers = [
   {
-    id: 'delta',
-    rank: 699,
+    id: 'nova',
+    name: 'Nova',
+    rank: 701,
   },
   {
-    id: 'alpha',
-    rank: 695,
+    id: 'astra',
+    name: 'Astra',
+    rank: 700,
   },
 ];
 
-function embed(provider: { id: string; rank: number }) {
+function embed(provider: { id: string; name: string; rank: number }) {
   return makeEmbed({
     id: provider.id,
-    name: provider.id.charAt(0).toUpperCase() + provider.id.slice(1),
+    name: provider.name,
     rank: provider.rank,
     disabled: false,
     async scrape(ctx) {
-      const [query, baseUrl] = ctx.url.split('|');
+      const query = ctx.url;
 
       const search = await ctx.fetcher.full('/search', {
         query: {
           query,
           provider: provider.id,
         },
-        credentials: 'include',
         baseUrl,
       });
 
@@ -35,12 +38,11 @@ function embed(provider: { id: string; rank: number }) {
 
       ctx.progress(50);
 
-      const result = await ctx.fetcher('/provider', {
+      const result = await ctx.fetcher('/source', {
         query: {
           resourceId: search.body.url,
           provider: provider.id,
         },
-        credentials: 'include',
         baseUrl,
       });
 
@@ -51,4 +53,4 @@ function embed(provider: { id: string; rank: number }) {
   });
 }
 
-export const [deltaScraper, alphaScraper] = providers.map(embed);
+export const [novaScraper, astraScraper] = providers.map(embed);

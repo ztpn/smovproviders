@@ -3,6 +3,8 @@ import { SourcererOutput, makeSourcerer } from '@/providers/base';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
+export const baseUrl = 'https://api.whvx.net';
+
 async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> {
   const query = {
     title: ctx.media.title,
@@ -16,15 +18,14 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
     }),
   };
 
-  const res: { providers: string[]; endpoint: string } = await ctx.fetcher('https://api.nsbx.ru/status');
+  const res: { providers: string[] } = await ctx.fetcher('/status', { baseUrl });
 
   if (res.providers?.length === 0) throw new NotFoundError('No providers available');
-  if (!res.endpoint) throw new Error('No endpoint returned');
 
   const embeds = res.providers.map((provider: string) => {
     return {
       embedId: provider,
-      url: `${JSON.stringify(query)}|${res.endpoint}`,
+      url: JSON.stringify(query),
     };
   });
 
@@ -33,12 +34,11 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   };
 }
 
-export const nsbxScraper = makeSourcerer({
-  id: 'nsbx',
-  name: 'NSBX',
-  rank: 129,
+export const whvxScraper = makeSourcerer({
+  id: 'whvx',
+  name: 'VidBinge',
+  rank: 128,
   flags: [flags.CORS_ALLOWED],
-  disabled: false,
   scrapeMovie: comboScraper,
   scrapeShow: comboScraper,
 });

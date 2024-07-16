@@ -13,6 +13,7 @@ import { upcloudScraper } from '@/providers/embeds/upcloud';
 import { upstreamScraper } from '@/providers/embeds/upstream';
 import { vidsrcembedScraper } from '@/providers/embeds/vidsrc';
 import { vTubeScraper } from '@/providers/embeds/vtube';
+import { astraScraper, novaScraper } from '@/providers/embeds/whvx';
 import { autoembedScraper } from '@/providers/sources/autoembed';
 import { catflixScraper } from '@/providers/sources/catflix';
 import { flixhqScraper } from '@/providers/sources/flixhq/index';
@@ -25,6 +26,7 @@ import { remotestreamScraper } from '@/providers/sources/remotestream';
 import { showboxScraper } from '@/providers/sources/showbox/index';
 import { tugaflixScraper } from '@/providers/sources/tugaflix';
 import { vidsrcScraper } from '@/providers/sources/vidsrc/index';
+import { whvxScraper } from '@/providers/sources/whvx';
 import { zoechipScraper } from '@/providers/sources/zoechip';
 
 import {
@@ -91,6 +93,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     soaperTvScraper,
     autoembedScraper,
     tugaflixScraper,
+    whvxScraper,
   ];
 }
 
@@ -135,5 +138,7 @@ export function gatherAllEmbeds(): Array<Embed> {
     autoembedTamilScraper,
     autoembedTeluguScraper,
     turbovidScraper,
+    novaScraper,
+    astraScraper,
   ];
 }

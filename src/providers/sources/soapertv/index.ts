@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 
-import { flags } from '@/entrypoint/utils/targets';
 import { Caption, labelToLanguageCode } from '@/providers/captions';
+import { Stream } from '@/providers/streams';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
 
@@ -41,13 +41,11 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext): Pr
   const contentPage$ = load(contentPage);
 
   const pass = contentPage$('#hId').attr('value');
-  const param = contentPage$('#divU').text();
 
-  if (!pass || !param) throw new NotFoundError('Content not found');
+  if (!pass) throw new NotFoundError('Content not found');
 
   const formData = new URLSearchParams();
   formData.append('pass', pass);
-  formData.append('param', param);
   formData.append('e2', '0');
   formData.append('server', '0');
 
@@ -90,20 +88,22 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext): Pr
     stream: [
       {
         id: 'primary',
-        playlist: streamResJson.val,
+        playlist: `${baseUrl}/${streamResJson.val}`,
         type: 'hls',
-        flags: [flags.IP_LOCKED],
+        proxyDepth: 2,
+        flags: [],
         captions,
       },
       ...(streamResJson.val_bak
         ? [
             {
               id: 'backup',
-              playlist: streamResJson.val_bak,
-              type: 'hls' as const,
-              flags: [flags.IP_LOCKED],
+              playlist: `${baseUrl}/${streamResJson.val_bak}`,
+              type: 'hls',
+              proxyDepth: 2,
+              flags: [],
               captions,
-            },
+            } as Stream,
           ]
         : []),
     ],
@@ -113,8 +113,8 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext): Pr
 export const soaperTvScraper = makeSourcerer({
   id: 'soapertv',
   name: 'SoaperTV',
-  rank: 115,
-  flags: [flags.IP_LOCKED],
+  rank: 126,
+  flags: [],
   scrapeMovie: universalScraper,
   scrapeShow: universalScraper,
 });
