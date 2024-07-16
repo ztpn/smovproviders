@@ -16,6 +16,7 @@ import { vTubeScraper } from '@/providers/embeds/vtube';
 import { astraScraper, novaScraper } from '@/providers/embeds/whvx';
 import { autoembedScraper } from '@/providers/sources/autoembed';
 import { catflixScraper } from '@/providers/sources/catflix';
+import { ee3Scraper } from '@/providers/sources/ee3';
 import { flixhqScraper } from '@/providers/sources/flixhq/index';
 import { goMoviesScraper } from '@/providers/sources/gomovies/index';
 import { insertunitScraper } from '@/providers/sources/insertunit';
@@ -93,6 +94,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     soaperTvScraper,
     autoembedScraper,
     tugaflixScraper,
+    ee3Scraper,
     whvxScraper,
   ];
 }
