@@ -18,6 +18,7 @@ import { autoembedScraper } from '@/providers/sources/autoembed';
 import { catflixScraper } from '@/providers/sources/catflix';
 import { ee3Scraper } from '@/providers/sources/ee3';
 import { flixhqScraper } from '@/providers/sources/flixhq/index';
+import { fsharetvScraper } from '@/providers/sources/fsharetv';
 import { goMoviesScraper } from '@/providers/sources/gomovies/index';
 import { insertunitScraper } from '@/providers/sources/insertunit';
 import { kissAsianScraper } from '@/providers/sources/kissasian/index';
@@ -96,6 +97,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     tugaflixScraper,
     ee3Scraper,
     whvxScraper,
+    fsharetvScraper,
   ];
 }
 
