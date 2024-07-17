@@ -11,6 +11,7 @@ import { streamsbScraper } from '@/providers/embeds/streamsb';
 import { turbovidScraper } from '@/providers/embeds/turbovid';
 import { upcloudScraper } from '@/providers/embeds/upcloud';
 import { upstreamScraper } from '@/providers/embeds/upstream';
+import { vidkerScraper } from '@/providers/embeds/vidker';
 import { vidsrcembedScraper } from '@/providers/embeds/vidsrc';
 import { vTubeScraper } from '@/providers/embeds/vtube';
 import { astraScraper, novaScraper } from '@/providers/embeds/whvx';
@@ -144,5 +145,6 @@ export function gatherAllEmbeds(): Array<Embed> {
     turbovidScraper,
     novaScraper,
     astraScraper,
+    vidkerScraper,
   ];
 }

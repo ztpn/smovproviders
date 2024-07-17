@@ -4,6 +4,7 @@
 // and i dont feel like doing that now
 import { load } from 'cheerio';
 
+import { flags } from '@/entrypoint/utils/targets';
 import { SourcererEmbed, SourcererOutput, makeSourcerer } from '@/providers/base';
 import { compareMedia } from '@/utils/compare';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
@@ -89,6 +90,6 @@ export const moviplusScraper = makeSourcerer({
   id: 'moviplus',
   name: 'MoviPlus',
   rank: 92,
-  flags: [],
+  flags: [flags.CORS_ALLOWED],
   scrapeMovie: comboScraper,
 });
