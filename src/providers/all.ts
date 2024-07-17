@@ -22,6 +22,7 @@ import { goMoviesScraper } from '@/providers/sources/gomovies/index';
 import { insertunitScraper } from '@/providers/sources/insertunit';
 import { kissAsianScraper } from '@/providers/sources/kissasian/index';
 import { lookmovieScraper } from '@/providers/sources/lookmovie';
+import { moviplusScraper } from '@/providers/sources/moviplus';
 import { nsbxScraper } from '@/providers/sources/nsbx';
 import { remotestreamScraper } from '@/providers/sources/remotestream';
 import { showboxScraper } from '@/providers/sources/showbox/index';
@@ -95,6 +96,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     autoembedScraper,
     tugaflixScraper,
     ee3Scraper,
+    moviplusScraper,
     whvxScraper,
   ];
 }
