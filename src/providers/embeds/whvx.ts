@@ -1,56 +1,70 @@
 import { EmbedOutput, makeEmbed } from '@/providers/base';
+import { baseUrl } from '@/providers/sources/whvx';
 import { NotFoundError } from '@/utils/errors';
-
-import { baseUrl } from '../sources/whvx';
 
 const providers = [
   {
     id: 'nova',
-    name: 'Nova',
-    rank: 701,
+    rank: 720,
   },
   {
     id: 'astra',
-    name: 'Astra',
+    rank: 710,
+  },
+  {
+    id: 'orion',
     rank: 700,
   },
 ];
 
-function embed(provider: { id: string; name: string; rank: number }) {
+export const headers = {
+  Origin: 'https://www.vidbinge.com',
+  Referer: 'https://www.vidbinge.com',
+};
+
+function embed(provider: { id: string; rank: number }) {
   return makeEmbed({
     id: provider.id,
-    name: provider.name,
+    name: provider.id.charAt(0).toUpperCase() + provider.id.slice(1),
     rank: provider.rank,
     disabled: false,
     async scrape(ctx) {
-      const query = ctx.url;
+      let progress = 50;
+      const interval = setInterval(() => {
+        if (progress < 100) {
+          progress += 1;
+          ctx.progress(progress);
+        }
+      }, 100);
 
-      const search = await ctx.fetcher.full('/search', {
-        query: {
-          query,
-          provider: provider.id,
-        },
-        baseUrl,
-      });
+      try {
+        const search = await ctx.fetcher.full(
+          `${baseUrl}/search?query=${encodeURIComponent(ctx.url)}&provider=${provider.id}`,
+          { headers },
+        );
 
-      if (search.statusCode === 429) throw new Error('Rate limited');
-      if (search.statusCode !== 200) throw new NotFoundError('Failed to search');
+        if (search.statusCode === 429) {
+          throw new Error('Rate limited');
+        } else if (search.statusCode !== 200) {
+          throw new NotFoundError('Failed to search');
+        }
 
-      ctx.progress(50);
+        const result = await ctx.fetcher(
+          `${baseUrl}/source?resourceId=${encodeURIComponent(search.body.url)}&provider=${provider.id}`,
+          { headers },
+        );
 
-      const result = await ctx.fetcher('/source', {
-        query: {
-          resourceId: search.body.url,
-          provider: provider.id,
-        },
-        baseUrl,
-      });
+        clearInterval(interval);
+        ctx.progress(100);
 
-      ctx.progress(100);
-
-      return result as EmbedOutput;
+        return result as EmbedOutput;
+      } catch (error) {
+        clearInterval(interval);
+        ctx.progress(100);
+        throw new NotFoundError('Failed to search');
+      }
     },
   });
 }
 
-export const [novaScraper, astraScraper] = providers.map(embed);
+export const [novaScraper, astraScraper, orionScraper] = providers.map(embed);

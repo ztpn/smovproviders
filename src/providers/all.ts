@@ -13,7 +13,7 @@ import { upcloudScraper } from '@/providers/embeds/upcloud';
 import { upstreamScraper } from '@/providers/embeds/upstream';
 import { vidsrcembedScraper } from '@/providers/embeds/vidsrc';
 import { vTubeScraper } from '@/providers/embeds/vtube';
-import { astraScraper, novaScraper } from '@/providers/embeds/whvx';
+import { astraScraper, novaScraper, orionScraper } from '@/providers/embeds/whvx';
 import { autoembedScraper } from '@/providers/sources/autoembed';
 import { catflixScraper } from '@/providers/sources/catflix';
 import { ee3Scraper } from '@/providers/sources/ee3';
@@ -144,5 +144,6 @@ export function gatherAllEmbeds(): Array<Embed> {
     turbovidScraper,
     novaScraper,
     astraScraper,
+    orionScraper,
   ];
 }
