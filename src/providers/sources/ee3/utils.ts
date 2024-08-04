@@ -22,7 +22,7 @@ export async function login(
   const cookie = parseSetCookie(
     // It retruns a cookie even when the login failed
     // I have the backup cookie here just in case
-    res.status === 1 ? req.headers.get('Set-Cookie') ?? '' : 'PHPSESSID=mk2p73c77qc28o5i5120843ruu;',
+    res.status === 1 ? (req.headers.get('Set-Cookie') ?? '') : 'PHPSESSID=mk2p73c77qc28o5i5120843ruu;',
   );
 
   return cookie.PHPSESSID.value;
