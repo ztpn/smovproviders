@@ -1,9 +1,11 @@
 import { load } from 'cheerio';
 
+import { flags } from '@/entrypoint/utils/targets';
 import { Caption, labelToLanguageCode } from '@/providers/captions';
 import { Stream } from '@/providers/streams';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
+import { convertPlaylistsToDataUrls } from '@/utils/playlist';
 
 import { InfoResponse } from './types';
 import { SourcererOutput, makeSourcerer } from '../../base';
@@ -88,20 +90,20 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext): Pr
     stream: [
       {
         id: 'primary',
-        playlist: `${baseUrl}/${streamResJson.val}`,
+        playlist: await convertPlaylistsToDataUrls(ctx.proxiedFetcher, `${baseUrl}/${streamResJson.val}`),
         type: 'hls',
         proxyDepth: 2,
-        flags: [],
+        flags: [flags.CORS_ALLOWED],
         captions,
       },
       ...(streamResJson.val_bak
         ? [
             {
               id: 'backup',
-              playlist: `${baseUrl}/${streamResJson.val_bak}`,
+              playlist: await convertPlaylistsToDataUrls(ctx.proxiedFetcher, `${baseUrl}/${streamResJson.val_bak}`),
               type: 'hls',
+              flags: [flags.CORS_ALLOWED],
               proxyDepth: 2,
-              flags: [],
               captions,
             } as Stream,
           ]
@@ -114,7 +116,7 @@ export const soaperTvScraper = makeSourcerer({
   id: 'soapertv',
   name: 'SoaperTV',
   rank: 126,
-  flags: [],
+  flags: [flags.CORS_ALLOWED],
   scrapeMovie: universalScraper,
   scrapeShow: universalScraper,
 });
