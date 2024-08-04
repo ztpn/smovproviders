@@ -14,6 +14,7 @@ const providers = [
   {
     id: 'orion',
     rank: 700,
+    disabled: true,
   },
 ];
 
@@ -22,12 +23,12 @@ export const headers = {
   Referer: 'https://www.vidbinge.com',
 };
 
-function embed(provider: { id: string; rank: number }) {
+function embed(provider: { id: string; rank: number; disabled?: boolean }) {
   return makeEmbed({
     id: provider.id,
     name: provider.id.charAt(0).toUpperCase() + provider.id.slice(1),
     rank: provider.rank,
-    disabled: false,
+    disabled: provider.disabled,
     async scrape(ctx) {
       let progress = 50;
       const interval = setInterval(() => {
