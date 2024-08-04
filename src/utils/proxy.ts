@@ -2,7 +2,7 @@ import { flags } from '@/entrypoint/utils/targets';
 import { Stream } from '@/providers/streams';
 
 export function requiresProxy(stream: Stream): boolean {
-  if (!stream.flags.includes(flags.CORS_ALLOWED) && !!(stream.headers && Object.keys(stream.headers).length > 0))
+  if (!stream.flags.includes(flags.CORS_ALLOWED) || !!(stream.headers && Object.keys(stream.headers).length > 0))
     return true;
   return false;
 }
