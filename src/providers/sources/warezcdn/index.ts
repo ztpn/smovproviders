@@ -5,6 +5,7 @@ import { SourcererEmbed, makeSourcerer } from '@/providers/base';
 import { mixdropScraper } from '@/providers/embeds/mixdrop';
 import { warezcdnembedHlsScraper } from '@/providers/embeds/warezcdn/hls';
 import { warezcdnembedMp4Scraper } from '@/providers/embeds/warezcdn/mp4';
+import { warezPlayerScraper } from '@/providers/embeds/warezcdn/warezplayer';
 import { NotFoundError } from '@/utils/errors';
 
 import { getExternalPlayerUrl, warezcdnBase } from './common';
@@ -46,6 +47,10 @@ export const warezcdnScraper = makeSourcerer({
           },
           {
             embedId: warezcdnembedMp4Scraper.id,
+            url: embedUrl,
+          },
+          {
+            embedId: warezPlayerScraper.id,
             url: embedUrl,
           },
         );
