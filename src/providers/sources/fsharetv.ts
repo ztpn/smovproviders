@@ -51,13 +51,17 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   );
   if (!apiRes.data.file.sources.length) throw new Error('No sources found');
 
+  // this is to get around a ext bug where it doesn't send the headers to the second req after redir
+  const mediaBase = new URL((await ctx.proxiedFetcher.full(apiRes.data.file.sources[0].src, { baseUrl })).finalUrl)
+    .origin;
+
   const qualities = apiRes.data.file.sources.reduce(
     (acc, source) => {
       const quality = typeof source.quality === 'number' ? source.quality.toString() : source.quality;
       const validQuality = getValidQualityFromString(quality);
       acc[validQuality] = {
         type: 'mp4',
-        url: `${baseUrl}${source.src}`,
+        url: `${mediaBase}${source.src.replace('/api', '')}`,
       };
       return acc;
     },
