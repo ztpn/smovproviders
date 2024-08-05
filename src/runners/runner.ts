@@ -38,6 +38,7 @@ export type ProviderRunnerOptions = {
   events?: FullScraperEvents;
   media: ScrapeMedia;
   proxyStreams?: boolean; // temporary
+  disableOpensubtitles?: boolean;
 };
 
 export async function runAllProviders(list: ProviderList, ops: ProviderRunnerOptions): Promise<RunOutput | null> {
@@ -115,15 +116,16 @@ export async function runAllProviders(list: ProviderList, ops: ProviderRunnerOpt
       if (!playableStream) throw new NotFoundError('No streams found');
 
       // opensubtitles
-      playableStream.captions = await addOpenSubtitlesCaptions(
-        playableStream.captions,
-        ops,
-        btoa(
-          `${ops.media.imdbId}${
-            ops.media.type === 'show' ? `.${ops.media.season.number}.${ops.media.episode.number}` : ''
-          }`,
-        ),
-      );
+      if (!ops.disableOpensubtitles)
+        playableStream.captions = await addOpenSubtitlesCaptions(
+          playableStream.captions,
+          ops,
+          btoa(
+            `${ops.media.imdbId}${
+              ops.media.type === 'show' ? `.${ops.media.season.number}.${ops.media.episode.number}` : ''
+            }`,
+          ),
+        );
 
       return {
         sourceId: source.id,
@@ -177,15 +179,16 @@ export async function runAllProviders(list: ProviderList, ops: ProviderRunnerOpt
         if (!playableStream) throw new NotFoundError('No streams found');
 
         // opensubtitles
-        playableStream.captions = await addOpenSubtitlesCaptions(
-          playableStream.captions,
-          ops,
-          btoa(
-            `${ops.media.imdbId}${
-              ops.media.type === 'show' ? `.${ops.media.season.number}.${ops.media.episode.number}` : ''
-            }`,
-          ),
-        );
+        if (!ops.disableOpensubtitles)
+          playableStream.captions = await addOpenSubtitlesCaptions(
+            playableStream.captions,
+            ops,
+            btoa(
+              `${ops.media.imdbId}${
+                ops.media.type === 'show' ? `.${ops.media.season.number}.${ops.media.episode.number}` : ''
+              }`,
+            ),
+          );
         embedOutput.stream = [playableStream];
       } catch (error) {
         const updateParams: UpdateEvent = {
