@@ -24,6 +24,7 @@ import { insertunitScraper } from '@/providers/sources/insertunit';
 import { kissAsianScraper } from '@/providers/sources/kissasian/index';
 import { lookmovieScraper } from '@/providers/sources/lookmovie';
 import { nsbxScraper } from '@/providers/sources/nsbx';
+import { redStarScraper } from '@/providers/sources/redstar';
 import { remotestreamScraper } from '@/providers/sources/remotestream';
 import { showboxScraper } from '@/providers/sources/showbox/index';
 import { tugaflixScraper } from '@/providers/sources/tugaflix';
@@ -99,6 +100,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     ee3Scraper,
     whvxScraper,
     fsharetvScraper,
+    redStarScraper,
   ];
 }
 
