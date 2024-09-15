@@ -1,5 +1,5 @@
 import { makeControls } from '@/entrypoint/controls';
-import { getBuiltinEmbeds, getBuiltinSources } from '@/entrypoint/providers';
+import { getBuiltinEmbeds, getBuiltinExternalSources, getBuiltinSources } from '@/entrypoint/providers';
 import { Targets, getTargetFeatures } from '@/entrypoint/utils/targets';
 import { Fetcher } from '@/fetchers/types';
 import { getProviders } from '@/providers/get';
@@ -19,6 +19,9 @@ export interface ProviderMakerOptions {
   // the device that the stream will be played on
   consistentIpForRequests?: boolean;
 
+  // used to add built in sources which aren't used by default aka external sources
+  externalSources?: 'all' | string[];
+
   // This is temporary
   proxyStreams?: boolean;
 }
@@ -29,9 +32,21 @@ export function makeProviders(ops: ProviderMakerOptions) {
     ops.consistentIpForRequests ?? false,
     ops.proxyStreams,
   );
+
+  const sources = [...getBuiltinSources()];
+
+  if (ops.externalSources === 'all') sources.push(...getBuiltinExternalSources());
+  else {
+    ops.externalSources?.forEach((source) => {
+      const matchingSource = getBuiltinExternalSources().find((v) => v.id === source);
+      if (!matchingSource) return;
+      sources.push(matchingSource);
+    });
+  }
+
   const list = getProviders(features, {
     embeds: getBuiltinEmbeds(),
-    sources: getBuiltinSources(),
+    sources,
   });
 
   return makeControls({
