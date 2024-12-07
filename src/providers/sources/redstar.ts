@@ -36,6 +36,7 @@ export const redStarScraper = makeSourcerer({
   id: 'redstar',
   name: 'redStar',
   disabled: true,
+  externalSource: true,
   rank: 131,
   flags: [flags.CORS_ALLOWED],
   scrapeMovie: universalScraper,
