@@ -68,7 +68,8 @@ export const turbovidScraper = makeEmbed({
           id: 'primary',
           playlist,
           headers: {
-            referer: baseUrl,
+            referer: `${baseUrl}/`,
+            origin: baseUrl,
           },
           flags: [],
           captions: [],
