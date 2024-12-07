@@ -78,7 +78,7 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext): Pr
 
     captions.push({
       id: sub.path,
-      url: sub.path,
+      url: `${baseUrl}${sub.path}`,
       type: 'srt',
       hasCorsRestrictions: false,
       language,
