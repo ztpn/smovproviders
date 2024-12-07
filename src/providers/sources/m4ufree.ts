@@ -8,7 +8,7 @@ import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { makeCookieHeader, parseSetCookie } from '@/utils/cookie';
 import { NotFoundError } from '@/utils/errors';
 
-let baseUrl = 'https://m4ufree.tv';
+let baseUrl = 'https://m4ufree.se';
 
 const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext) => {
   // this redirects to ww1.m4ufree.tv or ww2.m4ufree.tv
@@ -133,7 +133,7 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext) => 
       }),
     );
 
-    const url = iframePage$('iframe').attr('src');
+    const url = iframePage$('iframe').attr('src')?.trim();
     if (!url) continue;
 
     ctx.progress(100);
