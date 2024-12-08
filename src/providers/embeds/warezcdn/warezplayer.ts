@@ -1,25 +1,12 @@
 import { makeEmbed } from '@/providers/base';
-import { warezcdnApiBase, warezcdnPlayerBase } from '@/providers/sources/warezcdn/common';
 
 export const warezPlayerScraper = makeEmbed({
   id: 'warezplayer',
   name: 'warezPLAYER',
   rank: 85,
   async scrape(ctx) {
-    const page = await ctx.proxiedFetcher.full<string>(`/player.php`, {
-      baseUrl: warezcdnPlayerBase,
-      headers: {
-        Referer: `${warezcdnApiBase}/getEmbed.php?${new URLSearchParams({
-          id: ctx.url,
-          sv: 'warezcdn',
-        })}`,
-      },
-      query: {
-        id: ctx.url,
-      },
-    });
     // ex url: https://basseqwevewcewcewecwcw.xyz/video/0e4a2c65bdaddd66a53422d93daebe68
-    const playerPageUrl = new URL(page.finalUrl);
+    const playerPageUrl = new URL(ctx.url);
 
     const hash = playerPageUrl.pathname.split('/')[2];
     const playerApiRes = await ctx.proxiedFetcher('/player/index.php', {
