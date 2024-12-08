@@ -8,6 +8,7 @@ import { mixdropScraper } from '@/providers/embeds/mixdrop';
 import { mp4uploadScraper } from '@/providers/embeds/mp4upload';
 import { streambucketScraper } from '@/providers/embeds/streambucket';
 import { streamsbScraper } from '@/providers/embeds/streamsb';
+import { streamwishScraper } from '@/providers/embeds/streamwish';
 import { turbovidScraper } from '@/providers/embeds/turbovid';
 import { upcloudScraper } from '@/providers/embeds/upcloud';
 import { upstreamScraper } from '@/providers/embeds/upstream';
@@ -15,6 +16,7 @@ import { vidsrcembedScraper } from '@/providers/embeds/vidsrc';
 import { vTubeScraper } from '@/providers/embeds/vtube';
 import { astraScraper, novaScraper, orionScraper } from '@/providers/embeds/whvx';
 import { autoembedScraper } from '@/providers/sources/autoembed';
+import { bombtheirishScraper } from '@/providers/sources/bombtheirish';
 import { catflixScraper } from '@/providers/sources/catflix';
 import { ee3Scraper } from '@/providers/sources/ee3';
 import { flixhqScraper } from '@/providers/sources/flixhq/index';
@@ -101,6 +103,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     whvxScraper,
     fsharetvScraper,
     redStarScraper,
+    bombtheirishScraper,
   ];
 }
 
@@ -149,5 +152,6 @@ export function gatherAllEmbeds(): Array<Embed> {
     novaScraper,
     astraScraper,
     orionScraper,
+    streamwishScraper,
   ];
 }
