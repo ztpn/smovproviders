@@ -1,8 +1,8 @@
 import { ScrapeContext } from '@/utils/context';
 
-export const warezcdnBase = 'https://embed.warezcdn.com';
-export const warezcdnApiBase = 'https://warezcdn.com/embed';
-export const warezcdnPlayerBase = 'https://warezcdn.com/player';
+export const warezcdnBase = 'https://embed.warezcdn.link';
+export const warezcdnApiBase = 'https://warezcdn.link/embed';
+export const warezcdnPlayerBase = 'https://warezcdn.link/player';
 export const warezcdnWorkerProxy = 'https://workerproxy.warezcdn.workers.dev';
 
 export async function getExternalPlayerUrl(ctx: ScrapeContext, embedId: string, embedUrl: string) {

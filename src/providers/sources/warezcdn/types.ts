@@ -1,16 +1,22 @@
-interface Data {
+interface Episode {
   id: string;
-  audio: string;
-  mixdropStatus: string;
-  fembedStatus: string;
-  streamtapeStatus: string;
-  warezcdnStatus: string;
+  name: string;
+  editedName: string | null;
+  released: string;
+  titlePt: string;
+  rating: string;
+  runtime: string;
+  airdate: string;
 }
 
-type List = {
-  [key: string]: Data;
-};
+interface Season {
+  id: string;
+  name: string;
+  episodesCount: number;
+  episodes: Record<string, Episode>;
+}
 
-export interface SerieAjaxResponse {
-  list: List;
+export interface cachedSeasonsRes {
+  seasonCount: number;
+  seasons: Record<string, Season>;
 }
