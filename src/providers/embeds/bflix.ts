@@ -8,6 +8,7 @@ const mp4Regex = /https?:\/\/.*\.mp4/;
 export const bflixScraper = makeEmbed({
   id: 'bflix',
   name: 'bFlix',
+  disabled: true,
   rank: 113,
   scrape: async (ctx) => {
     const mainPage = await ctx.proxiedFetcher<string>(ctx.url);
