@@ -1,5 +1,5 @@
 import { flags } from '@/entrypoint/utils/targets';
-import { SourcererEmbed, makeSourcerer } from '@/providers/base';
+import { SourcererEmbed, SourcererOutput, makeSourcerer } from '@/providers/base';
 import { mixdropScraper } from '@/providers/embeds/mixdrop';
 import { warezcdnembedHlsScraper } from '@/providers/embeds/warezcdn/hls';
 import { warezcdnembedMp4Scraper } from '@/providers/embeds/warezcdn/mp4';
@@ -10,41 +10,39 @@ import { NotFoundError } from '@/utils/errors';
 import { warezcdnBase } from './common';
 import { cachedSeasonsRes } from './types';
 
-async function getEmbeds(id: string, servers: string, ctx: ScrapeContext): Promise<SourcererEmbed[]> {
+async function getEmbeds(id: string, servers: string, ctx: ScrapeContext): Promise<SourcererOutput> {
   const embeds: SourcererEmbed[] = [];
 
   for (const server of servers.split(',')) {
-    if (server === 'warezcdn') {
+    await ctx.proxiedFetcher<string>(`/getEmbed.php`, {
+      baseUrl: warezcdnBase,
+      headers: {
+        Referer: `${warezcdnBase}/getEmbed.php?${new URLSearchParams({ id, sv: server })}`,
+      },
+      method: 'HEAD',
+      query: { id, sv: server },
+    });
+
+    const embedPage = await ctx.proxiedFetcher<string>(`/getPlay.php`, {
+      baseUrl: warezcdnBase,
+      headers: {
+        Referer: `${warezcdnBase}/getEmbed.php?${new URLSearchParams({ id, sv: server })}`,
+      },
+      query: { id, sv: server },
+    });
+
+    const url = embedPage.match(/window.location.href\s*=\s*"([^"]+)"/)?.[1];
+
+    if (url && server === 'warezcdn') {
       embeds.push(
-        { embedId: warezcdnembedHlsScraper.id, url: id },
-        { embedId: warezcdnembedMp4Scraper.id, url: id },
-        { embedId: warezPlayerScraper.id, url: id },
+        { embedId: warezcdnembedHlsScraper.id, url },
+        { embedId: warezcdnembedMp4Scraper.id, url },
+        { embedId: warezPlayerScraper.id, url },
       );
-    } else if (server === 'mixdrop') {
-      // Without this req, the next one fails
-      await ctx.proxiedFetcher<string>(`/getEmbed.php`, {
-        baseUrl: warezcdnBase,
-        headers: {
-          Referer: `${warezcdnBase}/getEmbed.php?${new URLSearchParams({ id, sv: 'mixdrop' })}`,
-        },
-        method: 'HEAD',
-        query: { id, sv: 'mixdrop' },
-      });
-
-      const embedPage = await ctx.proxiedFetcher<string>(`/getPlay.php`, {
-        baseUrl: warezcdnBase,
-        headers: {
-          Referer: `${warezcdnBase}/getEmbed.php?${new URLSearchParams({ id, sv: 'mixdrop' })}`,
-        },
-        query: { id, sv: 'mixdrop' },
-      });
-
-      const url = embedPage.match(/window.location.href\s*=\s*"([^"]+)"/)?.[1];
-      if (url) embeds.push({ embedId: mixdropScraper.id, url });
-    }
+    } else if (url && server === 'mixdrop') embeds.push({ embedId: mixdropScraper.id, url });
   }
 
-  return embeds;
+  return { embeds };
 }
 
 export const warezcdnScraper = makeSourcerer({
@@ -61,11 +59,7 @@ export const warezcdnScraper = makeSourcerer({
     const [, id, servers] = serversPage.match(/let\s+data\s*=\s*'\[\s*\{\s*"id":"([^"]+)".*?"servers":"([^"]+)"/)!;
     if (!id || !servers) throw new NotFoundError('Failed to find episode id');
 
-    const embeds: SourcererEmbed[] = await getEmbeds(id, servers, ctx);
-
-    return {
-      embeds,
-    };
+    return getEmbeds(id, servers, ctx);
   },
   scrapeShow: async (ctx) => {
     if (!ctx.media.imdbId) throw new NotFoundError('This source requires IMDB id.');
@@ -100,10 +94,6 @@ export const warezcdnScraper = makeSourcerer({
     const [, id, servers] = episodeData.replace(/\\"/g, '"').match(/"\[\s*\{\s*"id":"([^"]+)".*?"servers":"([^"]+)"/)!;
     if (!id || !servers) throw new NotFoundError('Failed to find episode id');
 
-    const embeds: SourcererEmbed[] = await getEmbeds(id, servers, ctx);
-
-    return {
-      embeds,
-    };
+    return getEmbeds(id, servers, ctx);
   },
 });
