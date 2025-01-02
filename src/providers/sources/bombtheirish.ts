@@ -26,6 +26,7 @@ export const bombtheirishScraper = makeSourcerer({
   id: 'bombtheirish',
   name: 'bombthe.irish',
   rank: 50,
+  disabled: true,
   flags: [flags.CORS_ALLOWED],
   scrapeMovie: comboScraper,
   scrapeShow: comboScraper,
