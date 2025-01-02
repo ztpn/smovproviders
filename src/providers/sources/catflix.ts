@@ -5,11 +5,6 @@ import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 const baseUrl = 'https://catflix.su';
 
-function decodeBase64(encodedString: string): string {
-  const decodedString = atob(encodedString);
-  return decodedString;
-}
-
 async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> {
   const movieId = ctx.media.tmdbId;
   const mediaTitle = ctx.media.title.replace(/ /g, '-').replace(/[():]/g, '').toLowerCase();
@@ -58,7 +53,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
 
   const Catflix1 = mainOriginMatch[1];
 
-  const decodedUrl = decodeBase64(Catflix1);
+  const decodedUrl = atob(Catflix1);
 
   ctx.progress(90);
 
