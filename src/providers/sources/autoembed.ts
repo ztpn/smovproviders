@@ -38,7 +38,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
 export const autoembedScraper = makeSourcerer({
   id: 'autoembed',
   name: 'Autoembed',
-  rank: 92,
+  rank: 100,
   disabled: false,
   flags: [flags.CORS_ALLOWED],
   scrapeMovie: comboScraper,

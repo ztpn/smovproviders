@@ -11,7 +11,7 @@ const insertUnitBase = 'https://api.insertunit.ws/';
 export const insertunitScraper = makeSourcerer({
   id: 'insertunit',
   name: 'Insertunit',
-  rank: 60,
+  rank: 120,
   disabled: true,
   flags: [flags.CORS_ALLOWED],
   async scrapeShow(ctx) {
