@@ -114,15 +114,11 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext) => 
   for (const source of sources) {
     let embedId;
 
-    if (source.name === 'm') {
-      embedId = 'playm4u-m';
-    } else if (source.name === 'nm') {
-      continue;
-    } else if (source.name === 'h') {
-      embedId = 'playm4u-nm';
-    } else {
-      continue;
-    }
+    if (source.name === 'm')
+      embedId = 'playm4u-m'; // TODO
+    else if (source.name === 'nm') embedId = 'playm4u-nm';
+    else if (source.name === 'h') embedId = 'hydrax';
+    else continue;
 
     const iframePage$ = load(
       await ctx.proxiedFetcher<string>('/ajax', {
@@ -155,7 +151,7 @@ export const m4uScraper = makeSourcerer({
   id: 'm4ufree',
   name: 'M4UFree',
   rank: 200,
-  disabled: true,
+  disabled: false,
   flags: [],
   scrapeMovie: universalScraper,
   scrapeShow: universalScraper,
