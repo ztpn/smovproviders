@@ -31,7 +31,10 @@ const providers = [
 function embed(provider: { id: string; rank: number; disabled?: boolean }) {
   return makeEmbed({
     id: provider.id,
-    name: provider.id.split('-').map(word => word[0].toUpperCase() + word.slice(1)).join(' '),
+    name: provider.id
+      .split('-')
+      .map((word) => word[0].toUpperCase() + word.slice(1))
+      .join(' '),
     disabled: provider.disabled,
     rank: provider.rank,
     async scrape(ctx) {
