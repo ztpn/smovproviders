@@ -27,11 +27,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   for (const stream of fileData) {
     const url = stream.file;
     if (!url) continue;
-    const lang = stream.title.toLowerCase().trim();
-    // only return english
-    if (lang.includes('english') && url) {
-      embeds.push({ embedId: `autoembed-${lang}`, url });
-    }
+    embeds.push({ embedId: `autoembed-${stream.title.toLowerCase().trim()}`, url });
   }
 
   return {
