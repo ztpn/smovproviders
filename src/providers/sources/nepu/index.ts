@@ -76,7 +76,7 @@ const universalScraper = async (ctx: MovieScrapeContext | ShowScrapeContext) => 
 export const nepuScraper = makeSourcerer({
   id: 'nepu',
   name: 'Nepu',
-  rank: 80,
+  rank: 210,
   disabled: true,
   flags: [],
   scrapeMovie: universalScraper,
