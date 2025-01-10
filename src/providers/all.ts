@@ -29,6 +29,7 @@ import { nsbxScraper } from '@/providers/sources/nsbx';
 import { redStarScraper } from '@/providers/sources/redstar';
 import { remotestreamScraper } from '@/providers/sources/remotestream';
 import { showboxScraper } from '@/providers/sources/showbox/index';
+import { TASFScraper } from '@/providers/sources/theyallsayflix';
 import { tugaflixScraper } from '@/providers/sources/tugaflix';
 import { vidsrcScraper } from '@/providers/sources/vidsrc/index';
 import { vidsrcsuScraper } from '@/providers/sources/vidsrcsu';
@@ -106,6 +107,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     redStarScraper,
     bombtheirishScraper,
     vidsrcsuScraper,
+    TASFScraper,
   ];
 }
 
