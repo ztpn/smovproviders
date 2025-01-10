@@ -41,7 +41,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
 
   ctx.progress(60);
 
-  const data: { playlist: { src: string }[]; servers: { [key: string]: string; auto: string } } =
+  const data: { playlist: { src: string; label: string }[]; servers: { [key: string]: string; auto: string } } =
     await ctx.proxiedFetcher('/info2?v=8', {
       method: 'POST',
       body: new URLSearchParams({ z: JSON.stringify([{ s, t: 'movie' }]) }),
@@ -56,7 +56,9 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   [
     data.servers[data.servers.auto],
     ...Object.values(data.servers).filter((x) => x !== data.servers[data.servers.auto] && x !== data.servers.auto),
-  ].forEach((server, _) => embeds.push({ embedId: `mp4hydra-${_ + 1}`, url: server + data.playlist[0].src }));
+  ].forEach((server, _) =>
+    embeds.push({ embedId: `mp4hydra-${_ + 1}`, url: `${server}${data.playlist[0].src}|${data.playlist[0].label}` }),
+  );
 
   ctx.progress(90);
 

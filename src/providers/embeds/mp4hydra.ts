@@ -1,5 +1,6 @@
 import { flags } from '@/entrypoint/utils/targets';
 import { makeEmbed } from '@/providers/base';
+import { getValidQualityFromString } from '@/utils/quality';
 
 const providers = [
   {
@@ -21,13 +22,14 @@ function embed(provider: { id: string; name: string; rank: number; disabled?: bo
     disabled: provider.disabled,
     rank: provider.rank,
     async scrape(ctx) {
+      const [url, quality] = ctx.url.split('|');
       return {
         stream: [
           {
             id: 'primary',
             type: 'file',
             qualities: {
-              unknown: { url: ctx.url, type: 'mp4' },
+              [getValidQualityFromString(quality || '')]: { url, type: 'mp4' },
             },
             flags: [flags.CORS_ALLOWED],
             captions: [],
